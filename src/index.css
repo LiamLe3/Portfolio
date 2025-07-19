@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+.home-background {
+  background:
+    radial-gradient(circle, color-mix(in srgb, #a78bfa 35%, transparent) 70%, #a78bfa 100%);
+  opacity: 0.35;
+
+  mask-image: 
+    linear-gradient(to right, #fff 1px, transparent 0),
+    linear-gradient(to bottom, #fff 1px, transparent 0);
+  mask-size: 3rem 3rem;
+  mask-repeat: repeat;
+}
