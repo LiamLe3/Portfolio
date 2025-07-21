@@ -2,7 +2,12 @@ function HomeSection() {
 
   return (
     <section className="h-screen w-full bg-black">
-      <div className="h-screen w-full home-background flex items-center justify-center flex-col"></div>
+      <div className="home-background"></div>
+      <div className="text-white h-full w-full flex justify-center items-center flex-col">
+        <p>I'm Liam Lee and passionate about</p>
+        <h1>Frontend development and making websites </h1>
+      </div>
+      
     </section>
 
   );
