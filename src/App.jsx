@@ -1,10 +1,15 @@
+import NavigationBar from './NavigationBar';
 import HomeSection from './HomeSection';
+import SkillSection from './SkillSection';
 function App() {
 
   return (
-    <body className="hide-scrollbar">
+    <main className="center-items flex-col bg-black">
+      <div className="home-background"></div>
+      <NavigationBar />
       <HomeSection />
-    </body>
+      <SkillSection />
+    </main>
   );
 }
 
