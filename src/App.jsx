@@ -4,8 +4,8 @@ import SkillSection from './SkillSection';
 function App() {
 
   return (
-    <main className="center-items flex-col bg-black">
-      <div className="home-background"></div>
+    <main className="relative center-items flex-col bg-black -z-2">
+      <div className="grid-background pointer-events-none -z-1" ></div>
       <NavigationBar />
       <HomeSection />
       <SkillSection />

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-.home-background {
+.grid-background {
+  
   background:
     radial-gradient(circle, color-mix(in srgb, #a78bfa 35%, transparent) 70%, #a78bfa 100%);
   opacity: 0.35;
@@ -15,7 +16,7 @@
   
   height: 100%;
   width: 100%;
-  left: 0;
+  left: -1px;
   top: 0;
   position: fixed;
 }
