@@ -14,15 +14,14 @@ function SkillSection() {
     <section className="text-white section">
       <h1>Current Skills</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-center justify-between">
-        <SkillCard bgColor="bg-[#e44c27]/20" imgSrc={htmlLogo} techName="HTML" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#1672b6]/20" imgSrc={cssLogo} techName="CSS" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#f0db4f]/20" imgSrc={javascriptLogo} techName="JavaScript" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#007acc]/20" imgSrc={typescriptLogo} techName="TypeScript" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#62dafb]/20" imgSrc={reactLogo} techName="React" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#38bdf8]/20" imgSrc={tailwindLogo} techName="Tailwind" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#f34f28]/20" imgSrc={gitLogo} techName="Git" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#ff618f]/20" imgSrc={jestLogo} techName="Jest" techDesc="Lorem ipsum"/>
-        <SkillCard bgColor="bg-[#ffd845]/20" imgSrc={pythonLogo} techName="Python" techDesc="Lorem ipsum"/>
+        <SkillCard bgColor="bg-[#e44c27]/20" imgSrc={htmlLogo} techName="HTML" techDesc="Markup language"/>
+        <SkillCard bgColor="bg-[#1672b6]/20" imgSrc={cssLogo} techName="CSS" techDesc="Styling language"/>
+        <SkillCard bgColor="bg-[#f0db4f]/20" imgSrc={javascriptLogo} techName="JavaScript" techDesc="Language"/>
+        <SkillCard bgColor="bg-[#007acc]/20" imgSrc={typescriptLogo} techName="TypeScript" techDesc="Typed JavaScript"/>
+        <SkillCard bgColor="bg-[#62dafb]/20" imgSrc={reactLogo} techName="React" techDesc="JavaScript library"/>
+        <SkillCard bgColor="bg-[#38bdf8]/20" imgSrc={tailwindLogo} techName="Tailwind" techDesc="CSS framework"/>
+        <SkillCard bgColor="bg-[#f34f28]/20" imgSrc={gitLogo} techName="Git" techDesc="Version control"/>
+        <SkillCard bgColor="bg-[#ff618f]/20" imgSrc={jestLogo} techName="Jest" techDesc="Testing"/>
       </div>
     </section>
   );
