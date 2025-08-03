@@ -7,11 +7,10 @@ import reactLogo from "./assets/react.svg";
 import tailwindLogo from "./assets/tailwind.svg";
 import gitLogo from "./assets/git.svg"
 import jestLogo from "./assets/jest.svg"
-import pythonLogo from "./assets/python.svg"
 function SkillSection() {
 
   return (
-    <section className="text-white section">
+    <section className="text-white section relative">
       <h1>Current Skills</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-center justify-between">
         <SkillCard bgColor="bg-[#e44c27]/20" imgSrc={htmlLogo} techName="HTML" techDesc="Markup language"/>

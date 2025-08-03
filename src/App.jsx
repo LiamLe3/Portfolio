@@ -1,15 +1,17 @@
 import NavigationBar from './NavigationBar';
 import HomeSection from './HomeSection';
 import SkillSection from './SkillSection';
+import ProjectSection from './ProjectSection';
 function App() {
 
   return (
-    <main className="relative center-items flex-col bg-black -z-2">
-      <div className="grid-background pointer-events-none -z-1" ></div>
+    <div className="center-items flex-col bg-black">
+      <div className="grid-background"></div>
       <NavigationBar />
       <HomeSection />
       <SkillSection />
-    </main>
+      <ProjectSection />
+    </div>
   );
 }
 
