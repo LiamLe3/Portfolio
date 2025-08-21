@@ -1,8 +1,8 @@
 function ProjectCard({title, summary, techUsed, liveLink, githubLink, images, focus}) {
 
   return (
-    <div className="flex flex-row">
-      <div className="w-1/2 center-items flex-col">
+    <div className="flex flex-row h-[500px]">
+      <div className="w-1/2 flex justify-start flex-col">
         <h3>{title}</h3>
         <p>{summary}</p>
         <p>{techUsed}</p>
@@ -15,9 +15,11 @@ function ProjectCard({title, summary, techUsed, liveLink, githubLink, images, fo
           </a>
         </div>
       </div>
-      <div className="w-1/2 center-items">
+      {focus && (
+      <div className="w-1/2 center-items bg-red-200">
         <p>{images}</p>
       </div>
+    )}
     </div>
   );
 }
