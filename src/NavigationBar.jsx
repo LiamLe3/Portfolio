@@ -35,7 +35,7 @@ function NavigationBar() {
   }, [isDisplayed]);
 
   return (
-    <nav className={`center-items fixed top-10 mx-auto bg-violet-200 border border-blue-700 rounded-lg px-8 py-4 space-x-4 
+    <nav className={`center-items fixed top-10 mx-auto bg-violet-200 border border-blue-700 rounded-lg px-8 py-4 space-x-4 z-100
                       transition-all ease-in-out duration-750 transform ${isDisplayed ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-100"}`}>
       <NavigationButton name="Home"/>
       <NavigationButton name="Skills"/>
