@@ -15,7 +15,8 @@ function ProjectSection() {
         })
       },
       {
-        threshold: 0.5
+        rootMargin: "-50% 0% -50% 0%",
+        threshold: 0
       }
     );
 

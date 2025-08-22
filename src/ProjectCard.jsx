@@ -2,7 +2,7 @@ function ProjectCard({title, summary, techUsed, liveLink, githubLink, images, fo
 
   return (
     <div className="flex flex-row h-[500px]">
-      <div className="w-1/2 flex justify-start flex-col">
+      <div className={`w-1/2 flex justify-start flex-col ${focus ? "" : "opacity-35"}`}>
         <h3>{title}</h3>
         <p>{summary}</p>
         <p>{techUsed}</p>
