@@ -5,10 +5,10 @@ function ProjectInfo({title, summary, techUsed, liveLink, githubLink, focus}) {
   return (
     <div className={`w-full flex justify-start flex-col mb-[20px] ${focus ? "" : "opacity-35"}`}>
       <h3 className="text-3xl">{title}</h3>
-      <div className="text-base py-1">{summary}</div>
-      <div className="flex flex-wrap py-1">
+      <div className="text-base pb-1">{summary}</div>
+      <div className="flex flex-wrap pb-1">
         {techUsed.map((tech, i) => (
-          <div key={i} className="mr-[10px] mb-[10px] py-1 px-3 bg-red-200 rounded-md font-sans text-base">
+          <div key={i} className="mr-[10px] mb-[10px] pb-1 px-3 bg-red-200 rounded-md font-sans text-base">
             {tech}
           </div>
         ))}
