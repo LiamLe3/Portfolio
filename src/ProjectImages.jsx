@@ -16,7 +16,6 @@ function ProjectImages() {
     const container = containerRef.current;
     const inner = innerRef.current;
 
-    let x = 0;
     const itemWidth = container.offsetWidth;
 
     const handleDown = (clientX) => {
@@ -28,17 +27,14 @@ function ProjectImages() {
 
     const handleMove = (clientX) => {
       if (!pressed.current) return;
-      x = clientX;
-      let newLeft = x - startX.current;
+      let newLeft = clientX - startX.current;
 
       // Clamp the carousel so it doesn't scroll past left-most image
       // or right-most image
       const leftMost = 0;
       const rightMost = -(itemCount - 1) * itemWidth;
-      if(newLeft > leftMost) newLeft = leftMost;
-      if (newLeft < rightMost) newLeft = rightMost;
 
-      inner.style.left = `${newLeft}px`;
+      inner.style.left = `${Math.max(Math.min(newLeft, leftMost), rightMost)}px`;
     }
 
     const handleUp = () => {
@@ -65,10 +61,24 @@ function ProjectImages() {
     window.addEventListener("mousemove", mouseMove);
     window.addEventListener("mouseup", handleUp);
 
+    const touchStart = (e) => handleDown(e.touches[0].clientX);
+    const touchMove = (e) => {
+      e.preventDefault(); // stops page scroll while swiping
+      handleMove(e.touches[0].clientX);
+    };
+
+    container.addEventListener("touchstart", touchStart, { passive: false });
+    window.addEventListener("touchmove", touchMove, { passive: false });
+    window.addEventListener("touchend", handleUp);
+
     return () => {
       container.removeEventListener("mousedown", mouseDown);
       window.removeEventListener("mousemove", mouseMove);
       window.removeEventListener("mouseup", handleUp);
+
+      container.removeEventListener("touchstart", touchStart);
+      window.removeEventListener("touchmove", touchMove);
+      window.removeEventListener("touchend", handleUp);
     };
   }, []);
 
