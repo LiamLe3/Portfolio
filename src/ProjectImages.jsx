@@ -11,7 +11,6 @@ function ProjectImages() {
 
   const itemCount = 3;
 
-
   useEffect(() => {
     const container = containerRef.current;
     const inner = innerRef.current;
@@ -63,7 +62,7 @@ function ProjectImages() {
 
     const touchStart = (e) => handleDown(e.touches[0].clientX);
     const touchMove = (e) => {
-      e.preventDefault(); // stops page scroll while swiping
+      e.preventDefault();
       handleMove(e.touches[0].clientX);
     };
 
@@ -82,12 +81,35 @@ function ProjectImages() {
     };
   }, []);
 
+  const goToSlide = (index) => {
+    if (!innerRef.current || !containerRef.current) return;
+
+    const itemWidth = containerRef.current.offsetWidth;
+    currentIndex.current = index;
+
+    innerRef.current.style.transition = "left 0.3s ease";
+    innerRef.current.style.left = `-${index * itemWidth}px`;
+  };
+
   return (
-    <div ref={containerRef} className="slider">
-      <div ref={innerRef} className="list" style={{ left: `-${currentIndex.current * 100}%`}}>
-        <img src={dummyImg} alt="dummy" onDragStart={(e) => e.preventDefault()} />
-        <img src={dummyImg} alt="dummy" onDragStart={(e) => e.preventDefault()} />
-        <img src={dummyImg} alt="dummy" onDragStart={(e) => e.preventDefault()} />
+    <div ref={containerRef} className="carousel-wrapper">
+      <div className="carousel-track-wrapper">
+        <div ref={innerRef} className="carousel-track" style={{ left: `-${currentIndex.current * 100}%`}}>
+          <div className="carousel-image-container">
+            <img src={dummyImg} alt="dummy" onDragStart={(e) => e.preventDefault()} />
+          </div>
+          <div className="carousel-image-container">
+            <img src={dummyImg}  alt="slide-2" onDragStart={(e) => e.preventDefault()} />
+          </div>
+          <div className="carousel-image-container">
+            <img src={dummyImg}  alt="slide-3" onDragStart={(e) => e.preventDefault()} />
+          </div>
+        </div>
+        <div className="carousel-pagination">
+          <span className="bullet active-bullet" onClick={() => goToSlide(0)}></span>
+          <span className="bullet" onClick={() => goToSlide(1)}></span>
+          <span className="bullet" onClick={() => goToSlide(2)}></span>
+        </div>
       </div>
     </div>
   );
