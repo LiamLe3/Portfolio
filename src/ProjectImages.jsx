@@ -1,13 +1,12 @@
 import { useRef, useEffect, useState } from "react";
-import dummyImg from "./assets/dummyImg.jpg";
 
-function ProjectImages() {
+function ProjectImages({images}) {
   const containerRef = useRef(null);
   const innerRef = useRef(null);
 
   const pressed = useRef(false);
   const startX = useRef(0);
-  const currentIndex = useRef(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const itemCount = 3;
 
@@ -47,7 +46,7 @@ function ProjectImages() {
       const index = Math.round(-left / itemWidth);
 
       const newIndex = Math.max(0, Math.min(itemCount - 1, index));
-      currentIndex.current = newIndex;
+      setCurrentIndex(newIndex);
 
       inner.style.transition = "left 0.3s ease";
       inner.style.left = `-${newIndex * itemWidth}px`;
@@ -82,10 +81,10 @@ function ProjectImages() {
   }, []);
 
   const goToSlide = (index) => {
-    if (!innerRef.current || !containerRef.current) return;
+    console.log(currentIndex);
 
     const itemWidth = containerRef.current.offsetWidth;
-    currentIndex.current = index;
+    setCurrentIndex(index);
 
     innerRef.current.style.transition = "left 0.3s ease";
     innerRef.current.style.left = `-${index * itemWidth}px`;
@@ -94,21 +93,23 @@ function ProjectImages() {
   return (
     <div ref={containerRef} className="carousel-wrapper">
       <div className="carousel-track-wrapper">
-        <div ref={innerRef} className="carousel-track" style={{ left: `-${currentIndex.current * 100}%`}}>
-          <div className="carousel-image-container">
-            <img src={dummyImg} alt="dummy" onDragStart={(e) => e.preventDefault()} />
-          </div>
-          <div className="carousel-image-container">
-            <img src={dummyImg}  alt="slide-2" onDragStart={(e) => e.preventDefault()} />
-          </div>
-          <div className="carousel-image-container">
-            <img src={dummyImg}  alt="slide-3" onDragStart={(e) => e.preventDefault()} />
-          </div>
+        <div ref={innerRef} className="carousel-track" style={{ left: `-${currentIndex * 100}%`}}>
+          {images.map((imageSrc, i) => (
+            <div key={i} className="carousel-image-container">
+              <img src={imageSrc} onDragStart={(e) => e.preventDefault()} />
+            </div>
+          ))}
         </div>
-        <div className="carousel-pagination">
-          <span className="bullet active-bullet" onClick={() => goToSlide(0)}></span>
-          <span className="bullet" onClick={() => goToSlide(1)}></span>
-          <span className="bullet" onClick={() => goToSlide(2)}></span>
+        <div className="absolute text-center z-10 bottom-0 right-0 left-0">
+          {images.map((_, i) => (
+            <span 
+              key={i} 
+              className={`inline-flex bg-white border border-pink-300 rounded-full h-2 mx-2 cursor-pointer
+                          transition-all duration-300
+                          ${currentIndex === i ? "w-4 opacity-100" : "w-2 opacity-70"}`} 
+              onClick={() => goToSlide(i)}>
+            </span>
+          ))}
         </div>
       </div>
     </div>
