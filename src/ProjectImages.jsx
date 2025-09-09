@@ -8,7 +8,7 @@ function ProjectImages({images}) {
   const startX = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const itemCount = 3;
+  const itemCount = images.length;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -48,7 +48,7 @@ function ProjectImages({images}) {
       const newIndex = Math.max(0, Math.min(itemCount - 1, index));
       setCurrentIndex(newIndex);
 
-      inner.style.transition = "left 0.3s ease";
+      inner.style.transition = "0.3s ease";
       inner.style.left = `-${newIndex * itemWidth}px`;
     }
 
@@ -81,22 +81,21 @@ function ProjectImages({images}) {
   }, []);
 
   const goToSlide = (index) => {
-    console.log(currentIndex);
 
     const itemWidth = containerRef.current.offsetWidth;
     setCurrentIndex(index);
 
-    innerRef.current.style.transition = "left 0.3s ease";
+    innerRef.current.style.transition = "0.3s ease";
     innerRef.current.style.left = `-${index * itemWidth}px`;
   };
 
   return (
-    <div ref={containerRef} className="carousel-wrapper">
-      <div className="carousel-track-wrapper">
-        <div ref={innerRef} className="carousel-track" style={{ left: `-${currentIndex * 100}%`}}>
+    <div ref={containerRef} className="w-[500px] h-[500px] bg-red-500 rounded-2xl overflow-hidden relative m-auto">
+      <div className="flex h-full items-center">
+        <div ref={innerRef} className="absolute w-max flex">
           {images.map((imageSrc, i) => (
-            <div key={i} className="carousel-image-container">
-              <img src={imageSrc} onDragStart={(e) => e.preventDefault()} />
+            <div key={i} className="w-[500px] max-w-[100vw] h-full">
+              <img src={imageSrc} className="w-full h-full object-cover" onDragStart={(e) => e.preventDefault()} />
             </div>
           ))}
         </div>
