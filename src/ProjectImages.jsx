@@ -7,32 +7,49 @@ function ProjectImages({images}) {
   const pressed = useRef(false);
   const startX = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const itemWidth = useRef(0);
 
-  const itemCount = images.length;
+  const lastX = useRef(0);
+  const lastTime = useRef(0);
+  let velocity = 0;
+  const getCurrentTranslateX = () => {
+    const style = window.getComputedStyle(innerRef.current);
+    const matrix = new DOMMatrixReadOnly(style.transform);
+    return matrix.m41 || 0;
+  }
 
   useEffect(() => {
     const container = containerRef.current;
     const inner = innerRef.current;
 
-    const itemWidth = container.offsetWidth;
+    itemWidth.current = container.offsetWidth;
 
     const handleDown = (clientX) => {
       pressed.current = true;
-      startX.current = clientX - inner.offsetLeft;
+      startX.current = clientX - getCurrentTranslateX();
       inner.style.transition = "none";
       container.style.cursor = "grabbing"
     };
 
     const handleMove = (clientX) => {
       if (!pressed.current) return;
-      let newLeft = clientX - startX.current;
+      const now = performance.now();
+      const deltaX = clientX - lastX.current;
+      const deltaTime = now - lastTime.current;
 
-      // Clamp the carousel so it doesn't scroll past left-most image
-      // or right-most image
+      if(deltaTime > 0) {
+        velocity = deltaX / deltaTime;
+      }
+      lastX.current = clientX;
+      lastTime.current = now;
+
+      let newX = clientX - startX.current;
+
       const leftMost = 0;
-      const rightMost = -(itemCount - 1) * itemWidth;
+      const rightMost = -(images.length - 1) * itemWidth.current;
+      newX = Math.max(Math.min(newX, leftMost), rightMost);
 
-      inner.style.left = `${Math.max(Math.min(newLeft, leftMost), rightMost)}px`;
+      inner.style.transform = `translateX(${newX}px)`;
     }
 
     const handleUp = () => {
@@ -42,14 +59,25 @@ function ProjectImages({images}) {
     }
 
     const snapToNearest = () => {
-      const left = parseInt(inner.style.left);
-      const index = Math.round(-left / itemWidth);
+      const currentX = getCurrentTranslateX();
+      let index = Math.round(-currentX / itemWidth.current);
 
-      const newIndex = Math.max(0, Math.min(itemCount - 1, index));
+      const threshold = 0.5;
+      if (Math.abs(velocity) > threshold) {
+        if (velocity < 0) {
+          index = Math.min(index + 1, images.length - 1);
+        } else {
+          index = Math.max(index - 1, 0);
+        }
+      }
+
+      const newIndex = Math.max(0, Math.min(images.length - 1, index));
       setCurrentIndex(newIndex);
 
-      inner.style.transition = "0.3s ease";
-      inner.style.left = `-${newIndex * itemWidth}px`;
+      inner.style.transition = "transform 0.3s ease";
+      inner.style.transform = `translateX(-${newIndex * itemWidth.current}px)`;
+
+      velocity = 0;
     }
 
     const mouseDown = (e) => handleDown(e.clientX);
@@ -68,6 +96,14 @@ function ProjectImages({images}) {
     container.addEventListener("touchstart", touchStart, { passive: false });
     window.addEventListener("touchmove", touchMove, { passive: false });
     window.addEventListener("touchend", handleUp);
+    
+    const resizeObserver = new ResizeObserver(() => {
+      itemWidth.current = container.offsetWidth;
+      inner.style.transition = "none";
+      inner.style.transform = `translateX(-${currentIndex * itemWidth.current}px)`;
+    });
+
+    resizeObserver.observe(container);
 
     return () => {
       container.removeEventListener("mousedown", mouseDown);
@@ -77,16 +113,15 @@ function ProjectImages({images}) {
       container.removeEventListener("touchstart", touchStart);
       window.removeEventListener("touchmove", touchMove);
       window.removeEventListener("touchend", handleUp);
+
+      resizeObserver.disconnect();
     };
   }, []);
 
   const goToSlide = (index) => {
-
-    const itemWidth = containerRef.current.offsetWidth;
     setCurrentIndex(index);
-
-    innerRef.current.style.transition = "0.3s ease";
-    innerRef.current.style.left = `-${index * itemWidth}px`;
+    innerRef.current.style.transition = "transform 0.3s ease";
+    innerRef.current.style.transform = `translateX(-${index * itemWidth.current}px)`;
   };
 
   return (
@@ -95,7 +130,7 @@ function ProjectImages({images}) {
         <div ref={innerRef} className="absolute w-max flex">
           {images.map((imageSrc, i) => (
             <div key={i} className="w-[500px] max-w-[100vw] h-full">
-              <img src={imageSrc} className="w-full h-full object-cover" onDragStart={(e) => e.preventDefault()} />
+              <img src={imageSrc} loading="lazy" className="w-full h-full object-cover" onDragStart={(e) => e.preventDefault()} />
             </div>
           ))}
         </div>
