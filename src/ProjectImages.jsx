@@ -6,12 +6,16 @@ function ProjectImages({images}) {
 
   const pressed = useRef(false);
   const startX = useRef(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const itemWidth = useRef(0);
 
   const lastX = useRef(0);
   const lastTime = useRef(0);
-  let velocity = 0;
+  const velocity = useRef(0);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  
   const getCurrentTranslateX = () => {
     const style = window.getComputedStyle(innerRef.current);
     const matrix = new DOMMatrixReadOnly(style.transform);
@@ -27,8 +31,8 @@ function ProjectImages({images}) {
     const handleDown = (clientX) => {
       pressed.current = true;
       startX.current = clientX - getCurrentTranslateX();
-      inner.style.transition = "none";
-      container.style.cursor = "grabbing"
+      setIsAnimating(false);
+      setIsDragging(true);
     };
 
     const handleMove = (clientX) => {
@@ -38,7 +42,7 @@ function ProjectImages({images}) {
       const deltaTime = now - lastTime.current;
 
       if(deltaTime > 0) {
-        velocity = deltaX / deltaTime;
+        velocity.current = deltaX / deltaTime;
       }
       lastX.current = clientX;
       lastTime.current = now;
@@ -55,7 +59,7 @@ function ProjectImages({images}) {
     const handleUp = () => {
       if (pressed.current) snapToNearest();
       pressed.current = false;
-      container.style.cursor = "grab";
+      setIsDragging(false);
     }
 
     const snapToNearest = () => {
@@ -63,8 +67,8 @@ function ProjectImages({images}) {
       let index = Math.round(-currentX / itemWidth.current);
 
       const threshold = 0.5;
-      if (Math.abs(velocity) > threshold) {
-        if (velocity < 0) {
+      if (Math.abs(velocity.current) > threshold) {
+        if (velocity.current < 0) {
           index = Math.min(index + 1, images.length - 1);
         } else {
           index = Math.max(index - 1, 0);
@@ -74,60 +78,63 @@ function ProjectImages({images}) {
       const newIndex = Math.max(0, Math.min(images.length - 1, index));
       setCurrentIndex(newIndex);
 
-      inner.style.transition = "transform 0.3s ease";
+      setIsAnimating(true);
       inner.style.transform = `translateX(-${newIndex * itemWidth.current}px)`;
 
-      velocity = 0;
+      velocity.current = 0;
     }
 
     const mouseDown = (e) => handleDown(e.clientX);
     const mouseMove = (e) => handleMove(e.clientX);
-
-    container.addEventListener("mousedown", mouseDown);
-    window.addEventListener("mousemove", mouseMove);
-    window.addEventListener("mouseup", handleUp);
 
     const touchStart = (e) => handleDown(e.touches[0].clientX);
     const touchMove = (e) => {
       e.preventDefault();
       handleMove(e.touches[0].clientX);
     };
-
-    container.addEventListener("touchstart", touchStart, { passive: false });
-    window.addEventListener("touchmove", touchMove, { passive: false });
-    window.addEventListener("touchend", handleUp);
     
+    const events = [
+      [container, "mousedown", mouseDown],
+      [window, "mousemove", mouseMove],
+      [window, "mouseup", handleUp],
+      [container, "touchstart", touchStart, { passive: false }],
+      [window, "touchmove", touchMove, { passive: false }],
+      [window, "touchend", handleUp],
+    ];
+
     const resizeObserver = new ResizeObserver(() => {
       itemWidth.current = container.offsetWidth;
-      inner.style.transition = "none";
+      setIsAnimating(false);
       inner.style.transform = `translateX(-${currentIndex * itemWidth.current}px)`;
     });
 
     resizeObserver.observe(container);
 
+    events.forEach(([el, ev, fn, opts]) => el.addEventListener(ev, fn, opts));
     return () => {
-      container.removeEventListener("mousedown", mouseDown);
-      window.removeEventListener("mousemove", mouseMove);
-      window.removeEventListener("mouseup", handleUp);
-
-      container.removeEventListener("touchstart", touchStart);
-      window.removeEventListener("touchmove", touchMove);
-      window.removeEventListener("touchend", handleUp);
-
+      events.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn))
       resizeObserver.disconnect();
     };
   }, []);
 
   const goToSlide = (index) => {
     setCurrentIndex(index);
-    innerRef.current.style.transition = "transform 0.3s ease";
+    setIsAnimating(true);
     innerRef.current.style.transform = `translateX(-${index * itemWidth.current}px)`;
   };
 
   return (
-    <div ref={containerRef} className="w-[500px] h-[500px] bg-red-500 rounded-2xl overflow-hidden relative m-auto">
+    <div 
+      ref={containerRef} 
+      className={`w-[500px] h-[500px] bg-red-500 rounded-2xl overflow-hidden relative m-auto 
+        ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+    >
       <div className="flex h-full items-center">
-        <div ref={innerRef} className="absolute w-max flex">
+        <div 
+          ref={innerRef} 
+          className={`absolute w-max flex transform 
+            ${isAnimating ? "transition-transform duration-300 ease-in-out" : ""}`}
+        >
           {images.map((imageSrc, i) => (
             <div key={i} className="w-[500px] max-w-[100vw] h-full">
               <img src={imageSrc} loading="lazy" className="w-full h-full object-cover" onDragStart={(e) => e.preventDefault()} />
@@ -138,9 +145,8 @@ function ProjectImages({images}) {
           {images.map((_, i) => (
             <span 
               key={i} 
-              className={`inline-flex bg-white border border-pink-300 rounded-full h-2 mx-2 cursor-pointer
-                          transition-all duration-300
-                          ${currentIndex === i ? "w-4 opacity-100" : "w-2 opacity-70"}`} 
+              className={`inline-flex bg-white border border-pink-300 rounded-full h-2 mx-2 cursor-pointer transition-all duration-300
+                ${currentIndex === i ? "w-4 opacity-100" : "w-2 opacity-70"}`} 
               onClick={() => goToSlide(i)}>
             </span>
           ))}
