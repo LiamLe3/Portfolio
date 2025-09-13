@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 
-function ProjectImages({images}) {
+function ProjectImages({images, hide}) {
   const containerRef = useRef(null);
   const innerRef = useRef(null);
   const itemWidthRef = useRef(0);
@@ -126,7 +126,8 @@ function ProjectImages({images}) {
     <div 
       ref={containerRef} 
       className={`w-[500px] h-[500px] bg-red-500 rounded-2xl overflow-hidden relative m-auto 
-        ${isGrabbing ? 'cursor-grabbing' : 'cursor-grab'}`}
+        ${isGrabbing ? 'cursor-grabbing' : 'cursor-grab'}
+        ${hide ? 'hidden' : ''}`}
     >
       <div className="flex h-full items-center">
         <div 

@@ -1,9 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import ProjectInfo from "./ProjectInfo";
 import ProjectImages from "./ProjectImages";
+import dummyImg from "./assets/dummyImg.jpg";
 function ProjectSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const cardRefs = useRef([]);
+  const desktopRefs = useRef([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  const imgList = [dummyImg, dummyImg, dummyImg];
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const handler = (e) => setIsMobile(e.matches);
+
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,19 +33,20 @@ function ProjectSection() {
       }
     );
 
-    cardRefs.current.forEach(ref => {
+    const refsToUse = isMobile ? cardRefs.current : desktopRefs.current;
+    refsToUse.forEach(ref => {
       observer.observe(ref);
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
   const projects = [
     {
       title: "Tetris",
       summary: `Can you keep up as the blocks tumble from above? 
                 Stack, spin, and clear lines before the screen fills up! 
-                A retro-inspired puzzle game rebuilt with modern web tech.`,
+                A retro puzzle game rebuilt with modern web tech.`,
       techUsed: ["JavaScript", "JavaScript", "Java", "JavaScript", "JavaScript"],
       liveLink: "https://liamle3.github.io/Tetris/",
       githubLink: "https://github.com/LiamLe3/Tetris"
@@ -74,15 +87,15 @@ function ProjectSection() {
                 {...proj}
                 focus={activeIndex === i}
               />
-              <ProjectImages />
+              <ProjectImages images={imgList}/>
             </div>
           ))}
         </div>
 
-        <div className="hidden md:flex">
+        <div className="hidden md:flex gap-2">
           <div className="w-1/2">
             {projects.map((proj, i) => (
-              <div key={i} ref={(el) => (cardRefs.current[i] = el)} data-index={i} className="my-[20px]">
+              <div key={i} ref={(el) => (desktopRefs.current[i] = el)} data-index={i} className="my-[20px]">
                 <ProjectInfo
                   {...proj}
                   focus={activeIndex === i}
@@ -92,12 +105,14 @@ function ProjectSection() {
           </div>
           <div className="w-1/2">
             <div className="sticky top-[calc(50%-250px)]">
-              <ProjectImages/>
+              <p>${activeIndex}</p>
+              <ProjectImages images={imgList} hide={activeIndex !== 0}/>
+              <ProjectImages images={imgList} hide={activeIndex !== 1}/>
+              <ProjectImages images={imgList} hide={activeIndex !== 2}/>
             </div>
           </div>
         </div>
         <div className="h-[1000px]"></div>
-
       </div>
     </section>
   );
