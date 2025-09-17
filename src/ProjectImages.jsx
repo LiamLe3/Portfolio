@@ -28,7 +28,6 @@ function ProjectImages({images, hide}) {
   useEffect(() => {
     const container = containerRef.current;
     itemWidthRef.current = container.offsetWidth;
-
     const resizeObserver = new ResizeObserver(() => {
       itemWidthRef.current = container.offsetWidth;
       setTranslateX(-currentIndex * itemWidthRef.current);
@@ -81,7 +80,7 @@ function ProjectImages({images, hide}) {
       const currentX = translateXRef.current;
       let index = Math.round(-currentX / itemWidthRef.current);
 
-      const threshold = 0.5;
+      const threshold = 1;
       if (Math.abs(velocityRef.current) > threshold) {
         if (velocityRef.current < 0) {
           index = Math.min(index + 1, images.length - 1);
@@ -125,25 +124,25 @@ function ProjectImages({images, hide}) {
   return (
     <div 
       ref={containerRef} 
-      className={`w-[500px] h-[500px] bg-red-500 rounded-2xl overflow-hidden relative m-auto 
+      className={`w-full max-w-[500px] aspect-square bg-red-500 rounded-2xl overflow-hidden relative m-auto 
         ${isGrabbing ? 'cursor-grabbing' : 'cursor-grab'}
         ${hide ? 'hidden' : ''}`}
     >
       <div className="flex h-full items-center">
         <div 
           ref={innerRef} 
-          className={`absolute w-max flex transform 
+          className={`absolute w-[calc(100%*${images.length})] flex transform 
             ${isGrabbing ? "" : "transition-transform duration-300"}`}
         >
           {images.map((imageSrc, i) => (
-            <div key={i} className="w-[500px] max-w-[100vw] h-full">
+            <div key={i} className={`w-[calc(100%/${images.length})] px-5 h-full`}>
               <img src={imageSrc} loading="lazy" className="w-full h-full object-cover" onDragStart={(e) => e.preventDefault()} />
             </div>
           ))}
         </div>
         <div className="absolute text-center z-10 bottom-0 right-0 left-0">
           {images.map((_, i) => (
-            <span 
+            <span
               key={i} 
               className={`inline-flex bg-white border border-pink-300 rounded-full h-2 mx-2 cursor-pointer transition-all duration-300
                 ${currentIndex === i ? "w-4 opacity-100" : "w-2 opacity-70"}`} 

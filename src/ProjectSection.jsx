@@ -74,25 +74,24 @@ function ProjectSection() {
   ];
 
   return (
-    <section className="w-full bg-gray-500 center-items relative">
-      <div className="section">
+    <section className="w-full bg-gray-500 center-items relative px-5">
+      <div className="xl:w-[80rem]">
         <div className="w-full center-items">
           <h2 className="text-4xl">Projects</h2>
         </div>
 
-        <div className="block md:hidden w-full">
+        <div className="block flex flex-col w-full lg:hidden">
           {projects.map((proj, i) => (
-            <div key={i} ref={(el) => (cardRefs.current[i] = el)} data-index={i} className="my-[20px]">
+            <div key={i} ref={(el) => (cardRefs.current[i] = el)} data-index={i} className="my-[20px] w-full">
               <ProjectInfo
                 {...proj}
                 focus={activeIndex === i}
               />
-              <ProjectImages images={imgList}/>
+              <ProjectImages images={imgList} hide={false}/>
             </div>
           ))}
         </div>
-
-        <div className="hidden md:flex gap-2">
+        <div className="hidden gap-10 lg:flex">
           <div className="w-1/2">
             {projects.map((proj, i) => (
               <div key={i} ref={(el) => (desktopRefs.current[i] = el)} data-index={i} className="my-[20px]">
@@ -105,14 +104,12 @@ function ProjectSection() {
           </div>
           <div className="w-1/2">
             <div className="sticky top-[calc(50%-250px)]">
-              <p>${activeIndex}</p>
               <ProjectImages images={imgList} hide={activeIndex !== 0}/>
               <ProjectImages images={imgList} hide={activeIndex !== 1}/>
               <ProjectImages images={imgList} hide={activeIndex !== 2}/>
             </div>
           </div>
         </div>
-        <div className="h-[1000px]"></div>
       </div>
     </section>
   );
@@ -120,5 +117,6 @@ function ProjectSection() {
 
 export default ProjectSection;
 
-/*
-        */
+/**
+ *        
+ */

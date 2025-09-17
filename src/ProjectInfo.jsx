@@ -14,7 +14,7 @@ function ProjectInfo({title, summary, techUsed, liveLink, githubLink, focus}) {
         ))}
       </div>
       <div className="flex">
-        <a className="bg-black text-white flex-1 py-1 px-3 mr-[5px] rounded-md inline-flex items-center justify-center gap-2" href={liveLink} target="-blank" rel="noopener noreferrer">
+        <a className="bg-black text-white flex-1 py-1 px-3 mr-[20px] rounded-md inline-flex items-center justify-center gap-2" href={liveLink} target="-blank" rel="noopener noreferrer">
           <DemoLogo className="fill-white size-4"/>
           Demo
         </a>
