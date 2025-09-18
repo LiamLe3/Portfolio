@@ -74,11 +74,11 @@ function ProjectSection() {
   ];
 
   return (
-    <section className="w-full bg-gray-500 center-items relative px-5">
-      <div className="xl:w-[80rem]">
-        <div className="w-full center-items">
-          <h2 className="text-4xl">Projects</h2>
-        </div>
+    <section className="w-full bg-[#1A1A1A] center-items relative px-5 pt-10 pb-15 mt-16 border-y-2 border-white">
+      <div className="xl:w-[80rem] text-white">
+        <h2 className="w-full text-center pb-8 text-4xl">
+          Projects
+        </h2>
 
         <div className="block flex flex-col w-full lg:hidden">
           {projects.map((proj, i) => (
@@ -87,7 +87,7 @@ function ProjectSection() {
                 {...proj}
                 focus={activeIndex === i}
               />
-              <ProjectImages images={imgList} hide={false}/>
+              <ProjectImages images={imgList} colour='#fda4af' hide={false}/>
             </div>
           ))}
         </div>
@@ -104,9 +104,9 @@ function ProjectSection() {
           </div>
           <div className="w-1/2">
             <div className="sticky top-[calc(50%-250px)]">
-              <ProjectImages images={imgList} hide={activeIndex !== 0}/>
-              <ProjectImages images={imgList} hide={activeIndex !== 1}/>
-              <ProjectImages images={imgList} hide={activeIndex !== 2}/>
+              <ProjectImages images={imgList} colour='#fda4af' hide={activeIndex !== 0}/>
+              <ProjectImages images={imgList} colour='#d8b4fe' hide={activeIndex !== 1}/>
+              <ProjectImages images={imgList} colour='#a7c1e0' hide={activeIndex !== 2}/>
             </div>
           </div>
         </div>

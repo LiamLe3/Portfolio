@@ -12,7 +12,7 @@ function SkillSection() {
   return (
     <section className="text-white relative px-5 w-screen">
       <div className="xl:w-[80rem] mx-auto">
-        <h1>Current Skills</h1>
+        <h1 className="w-full text-center pb-8 text-4xl">My Tech Arsenel</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-center justify-between">
           <SkillCard bgColor="bg-[#e44c27]/20" imgSrc={htmlLogo} techName="HTML" techDesc="Markup language"/>
           <SkillCard bgColor="bg-[#1672b6]/20" imgSrc={cssLogo} techName="CSS" techDesc="Styling language"/>

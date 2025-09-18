@@ -1,10 +1,13 @@
 function HomeSection() {
 
   return (
-    <section className="h-screen text-white text-center center-items flex-col">
-      <p className="text-sm md:text-md lg:text-xl">Liam Lee - Frontend Developer</p>
-      <h1 className="text-3xl md:text-5xl lg:text-6xl">From concept to clickable</h1>
-      <h1 className="text-3xl md:text-5xl lg:text-6xl">Crafted with code</h1>
+    <section className="h-screen text-white text-center center-items flex-col xl:w-[60rem]">
+      <h1 className="text-3xl md:text-5xl lg:text-6xl pb-3">
+        I'm
+        <span className="bg-gradient-to-r from-purple-500 to-purple-200 bg-clip-text text-transparent"> Liam</span>
+        , a Frontend Developer.</h1>
+      <h1 className="text-sm md:text-md lg:text-xl">I build clean, responsive websites that combine modern design with practical functionality.</h1>
+      <div>View Projects</div>
     </section>
 
   );

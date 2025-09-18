@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 
-function ProjectImages({images, hide}) {
+function ProjectImages({images, colour, hide}) {
   const containerRef = useRef(null);
   const innerRef = useRef(null);
   const itemWidthRef = useRef(0);
@@ -124,18 +124,24 @@ function ProjectImages({images, hide}) {
   return (
     <div 
       ref={containerRef} 
-      className={`w-full max-w-[500px] aspect-square bg-red-500 rounded-2xl overflow-hidden relative m-auto 
+      style={{ backgroundColor: colour }}
+      className={`w-full max-w-[500px] aspect-square rounded-2xl overflow-hidden relative m-auto 
         ${isGrabbing ? 'cursor-grabbing' : 'cursor-grab'}
         ${hide ? 'hidden' : ''}`}
     >
       <div className="flex h-full items-center">
         <div 
           ref={innerRef} 
+          style={{ width: `calc(100% * ${images.length})` }} 
           className={`absolute w-[calc(100%*${images.length})] flex transform 
             ${isGrabbing ? "" : "transition-transform duration-300"}`}
         >
           {images.map((imageSrc, i) => (
-            <div key={i} className={`w-[calc(100%/${images.length})] px-5 h-full`}>
+            <div 
+              key={i} 
+              style={{ width: `calc(100% / ${images.length})` }} 
+              className={`px-5 h-full`}
+            >
               <img src={imageSrc} loading="lazy" className="w-full h-full object-cover" onDragStart={(e) => e.preventDefault()} />
             </div>
           ))}
@@ -144,7 +150,8 @@ function ProjectImages({images, hide}) {
           {images.map((_, i) => (
             <span
               key={i} 
-              className={`inline-flex bg-white border border-pink-300 rounded-full h-2 mx-2 cursor-pointer transition-all duration-300
+              style={{border: `1px solid ${colour}`,}}
+              className={`inline-flex bg-white rounded-full h-2 mx-2 cursor-pointer transition-all duration-300 drop-shadow-xs/75
                 ${currentIndex === i ? "w-4 opacity-100" : "w-2 opacity-70"}`} 
               onClick={() => goToSlide(i)}>
             </span>
