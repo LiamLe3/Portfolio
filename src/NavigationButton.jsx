@@ -1,10 +1,9 @@
-function NavigationButton({name}) {
+function NavigationButton({name, idName}) {
 
   return (
-    <div className="text-white">
+    <a href={idName} className="text-white text-2xl hover:text-purple-500 transition-colors duration-200">
       {name}
-    </div>
-
+    </a>
   );
 }
 

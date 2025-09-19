@@ -142,7 +142,7 @@ function ProjectImages({images, colour, hide}) {
               style={{ width: `calc(100% / ${images.length})` }} 
               className={`px-5 h-full`}
             >
-              <img src={imageSrc} loading="lazy" className="w-full h-full object-cover" onDragStart={(e) => e.preventDefault()} />
+              <img src={imageSrc} loading="lazy" className="w-full max-h-[500px] object-contain" onDragStart={(e) => e.preventDefault()} />
             </div>
           ))}
         </div>

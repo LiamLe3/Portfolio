@@ -5,8 +5,16 @@
   --breakpoint-lg: 48rem;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: black;
+}
+
+section {
+  scroll-margin-top: 80px;
 }
 
 .grid-background {

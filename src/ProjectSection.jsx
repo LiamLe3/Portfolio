@@ -2,6 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import ProjectInfo from "./ProjectInfo";
 import ProjectImages from "./ProjectImages";
 import dummyImg from "./assets/dummyImg.jpg";
+import MTGImg1 from "./images/MTGImg1.png";
+import MTGImg2 from "./images/MTGImg2.png";
+import MTGImg3 from "./images/MTGImg3.png";
+import TetrisPC from "./images/TetrisPC.png";
+import TetrisPhone from "./images/TetrisPhone.png";
+import PokemonHome from "./images/PokemonHome.png";
+import PokemonPC from "./images/PokemonPC.png";
+import PokemonMobile from "./images/PokemonMobile.png";
+
+
 function ProjectSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const cardRefs = useRef([]);
@@ -9,6 +19,8 @@ function ProjectSection() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const imgList = [dummyImg, dummyImg, dummyImg];
+
+  const MTGList = [MTGImg1, MTGImg2, MTGImg3];
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
     const handler = (e) => setIsMobile(e.matches);
@@ -43,40 +55,45 @@ function ProjectSection() {
 
   const projects = [
     {
-      title: "Tetris",
-      summary: `Can you keep up as the blocks tumble from above? 
-                Stack, spin, and clear lines before the screen fills up! 
-                A retro puzzle game rebuilt with modern web tech.`,
-      techUsed: ["JavaScript", "JavaScript", "Java", "JavaScript", "JavaScript"],
-      liveLink: "https://liamle3.github.io/Tetris/",
-      githubLink: "https://github.com/LiamLe3/Tetris"
-    },
-    {
       title: "MTG Card Search",
             summary: `Can you keep up as the blocks tumble from above? 
                 Stack, spin, and clear lines before the screen fills up! 
                 A retro-inspired puzzle game rebuilt with modern web tech.`,
-      techUsed: ["JavaScript", "JavaScript", "Java", "JavaScript", "JavaScript"],
       techUsed: ["React"],
       liveLink: "https://mtgcardsearch.netlify.app/",
-      githubLink: "https://github.com/LiamLe3/MTG-Search"
+      githubLink: "https://github.com/LiamLe3/MTG-Search",
+      images: [MTGImg1, MTGImg2, MTGImg3],
+      colour: "#fda4af"
     },
+    {
+      title: "Tetris",
+      summary: `Can you keep up as the blocks tumble from above? 
+                Stack, spin, and clear lines before the screen fills up! 
+                A retro puzzle game rebuilt with modern web tech.`,
+      techUsed: ["JavaScript", "HTML", "CSS"],
+      liveLink: "https://liamle3.github.io/Tetris/",
+      githubLink: "https://github.com/LiamLe3/Tetris",
+      images: [TetrisPC, TetrisPhone],
+      colour: "#d8b4fe"
+    },
+    
     {
       title: "Pokedex",
             summary: `Can you keep up as the blocks tumble from above? 
                 Stack, spin, and clear lines before the screen fills up! 
                 A retro-inspired puzzle game rebuilt with modern web tech.`,
-      techUsed: ["JavaScript", "JavaScript", "Java", "JavaScript", "JavaScript"],
-      techUsed: ["Jest", "JavaScript"],
+      techUsed: ["Jest", "JavaScript", "HTML", "CSS"],
       liveLink: "https://liamle3.github.io/Pokedex/",
-      githubLink: "https://github.com/LiamLe3/Pokedex"
+      githubLink: "https://github.com/LiamLe3/Pokedex",
+      images: [PokemonPC, PokemonMobile, PokemonHome],
+      colour: "#a7c1e0"
     },
   ];
 
   return (
-    <section className="w-full bg-[#1A1A1A] center-items relative px-5 pt-10 pb-15 mt-16 border-y-2 border-white">
+    <section id="projects" className="w-full bg-[#1A1A1A] center-items relative px-5 pt-10 pb-15 mt-16 border-y-2 border-white">
       <div className="xl:w-[80rem] text-white">
-        <h2 className="w-full text-center pb-8 text-4xl">
+        <h2 className="w-full text-center pb-8 text-5xl">
           Projects
         </h2>
 
@@ -87,7 +104,7 @@ function ProjectSection() {
                 {...proj}
                 focus={activeIndex === i}
               />
-              <ProjectImages images={imgList} colour='#fda4af' hide={false}/>
+              <ProjectImages images={proj.images} colour={proj.colour} hide={false}/>
             </div>
           ))}
         </div>
@@ -104,9 +121,14 @@ function ProjectSection() {
           </div>
           <div className="w-1/2">
             <div className="sticky top-[calc(50%-250px)]">
-              <ProjectImages images={imgList} colour='#fda4af' hide={activeIndex !== 0}/>
-              <ProjectImages images={imgList} colour='#d8b4fe' hide={activeIndex !== 1}/>
-              <ProjectImages images={imgList} colour='#a7c1e0' hide={activeIndex !== 2}/>
+              {projects.map((proj, i) => (
+                <ProjectImages
+                  key={i}
+                  images={proj.images}
+                  colour={proj.colour}
+                  hide={activeIndex !== i}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -116,7 +138,3 @@ function ProjectSection() {
 }
 
 export default ProjectSection;
-
-/**
- *        
- */

@@ -6,8 +6,8 @@ function SkillCard({bgColor, imgSrc, techName, techDesc}) {
         <img alt={`${techName} logo`} className="size-8" src={imgSrc}/>
       </div>
       <div>
-        <h2>{techName}</h2>
-        <p>{techDesc}</p>
+        <h2 className="text-lg">{techName}</h2>
+        <p className="text-md text-gray-400">{techDesc}</p>
       </div>
     </div>
   );
