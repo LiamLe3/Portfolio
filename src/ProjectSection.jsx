@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import ProjectInfo from "./ProjectInfo";
 import ProjectImages from "./ProjectImages";
-import dummyImg from "./assets/dummyImg.jpg";
 import MTGImg1 from "./images/MTGImg1.png";
 import MTGImg2 from "./images/MTGImg2.png";
 import MTGImg3 from "./images/MTGImg3.png";
@@ -18,9 +17,6 @@ function ProjectSection() {
   const desktopRefs = useRef([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const imgList = [dummyImg, dummyImg, dummyImg];
-
-  const MTGList = [MTGImg1, MTGImg2, MTGImg3];
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
     const handler = (e) => setIsMobile(e.matches);

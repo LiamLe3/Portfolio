@@ -11,6 +11,7 @@ function ProjectImages({images, colour, hide}) {
   const lastXRef = useRef(0);
   const lastTimeRef = useRef(0);
   const velocityRef = useRef(0);
+  const animatingRef = useRef(false);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isGrabbing, setIsGrabbing] = useState(false);
@@ -30,13 +31,14 @@ function ProjectImages({images, colour, hide}) {
     itemWidthRef.current = container.offsetWidth;
     const resizeObserver = new ResizeObserver(() => {
       itemWidthRef.current = container.offsetWidth;
+      animatingRef.current = false;
       setTranslateX(-currentIndex * itemWidthRef.current);
     });
 
     resizeObserver.observe(container);
 
     return () => resizeObserver.disconnect();
-  }, [])
+  }, [currentIndex])
   
   useEffect(() => {
     const container = containerRef.current;
@@ -47,6 +49,7 @@ function ProjectImages({images, colour, hide}) {
       grabRef.current = true;
       startXRef.current = clientX - translateXRef.current;
       setIsGrabbing(true);
+      animatingRef.current = false;
     };
 
     const handleMove = (clientX) => {
@@ -92,8 +95,8 @@ function ProjectImages({images, colour, hide}) {
       const newIndex = Math.max(0, Math.min(images.length - 1, index));
       setCurrentIndex(newIndex);
       setIsGrabbing(false);
+      animatingRef.current = true;
       setTranslateX(-newIndex * itemWidthRef.current);
-
       velocityRef.current = 0;
     }
 
@@ -133,16 +136,16 @@ function ProjectImages({images, colour, hide}) {
         <div 
           ref={innerRef} 
           style={{ width: `calc(100% * ${images.length})` }} 
-          className={`absolute w-[calc(100%*${images.length})] flex transform 
-            ${isGrabbing ? "" : "transition-transform duration-300"}`}
+          className={`absolute w-[calc(100%*${images.length})] h-full flex transform 
+            ${animatingRef.current ? "transition-transform duration-300" : ""}`}
         >
           {images.map((imageSrc, i) => (
             <div 
               key={i} 
               style={{ width: `calc(100% / ${images.length})` }} 
-              className={`px-5 h-full`}
+              className={`h-full flex justify-center items-center`}
             >
-              <img src={imageSrc} loading="lazy" className="w-full max-h-[500px] object-contain" onDragStart={(e) => e.preventDefault()} />
+              <img src={imageSrc} loading="lazy" className="w-max-full max-h-full object-contain" onDragStart={(e) => e.preventDefault()} />
             </div>
           ))}
         </div>
