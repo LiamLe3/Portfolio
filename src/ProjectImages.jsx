@@ -136,7 +136,8 @@ function ProjectImages({images, colour, hide}) {
         <div 
           ref={innerRef} 
           style={{ width: `calc(100% * ${images.length})` }} 
-          className={`absolute w-[calc(100%*${images.length})] h-full flex transform 
+          className={`absolute h-full flex transform 
+            w-[calc(100%*${images.length})]
             ${animatingRef.current ? "transition-transform duration-300" : ""}`}
         >
           {images.map((imageSrc, i) => (
